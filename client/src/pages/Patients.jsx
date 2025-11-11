@@ -72,9 +72,12 @@ export default function Patients() {
 
   return (
     <div>
-      <h2 className="mb-3 text-2xl font-semibold">Patients</h2>
+      <div className="mb-3 flex items-center justify-between">
+        <h2 className="text-2xl font-semibold">Patients</h2>
+        <div className="hidden sm:block text-xs text-gray-500">Manage and view patient profiles</div>
+      </div>
       {(hasAnyRole('admin', 'receptionist')) && (
-        <form onSubmit={addPatient} className="mb-4">
+        <form onSubmit={addPatient} className="mb-4 rounded-xl bg-white/90 p-3 shadow">
           <div className="mb-2 flex flex-wrap items-start gap-2">
             <div className="w-48">
               <input 
@@ -113,7 +116,7 @@ export default function Patients() {
       {loading ? (
         <div className="text-gray-600">Loading...</div>
       ) : (
-        <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow">
+        <div className="overflow-hidden rounded-xl border border-gray-200 bg-white/95 backdrop-blur shadow">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>

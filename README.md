@@ -96,6 +96,7 @@ Medicare-Pro/
 - [User Guide](./USER_GUIDE.md) - User manual for all roles
 - [Testing Guide](./TESTING_GUIDE.md) - Comprehensive testing checklist
 - [Project Plan](./PROJECT_PLAN.md) - Development plan and progress
+- [Project Structure](./PROJECT_STRUCTURE.md) - Complete file/folder structure with descriptions
 
 ## Development
 

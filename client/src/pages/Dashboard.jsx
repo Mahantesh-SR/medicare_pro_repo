@@ -36,26 +36,41 @@ export default function Dashboard() {
 
   return (
     <div>
-      <h2 className="mb-6 text-3xl font-bold">Dashboard</h2>
+      <div className="mb-6 flex items-center justify-between">
+        <h2 className="text-3xl font-bold">Dashboard</h2>
+        <div className="hidden sm:flex items-center gap-2 text-sm text-gray-600">
+          <span className="inline-block h-2 w-2 rounded-full bg-green-500"></span>
+          System healthy
+        </div>
+      </div>
 
       {/* Stats Cards */}
       <div className="mb-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div className="rounded-lg bg-blue-50 p-6 shadow">
-          <div className="text-sm font-medium text-blue-600">Total Patients</div>
+        <div className="rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 p-6 shadow">
+          <div className="flex items-center justify-between">
+            <div className="text-sm font-medium text-blue-600">Total Patients</div>
+            <span className="rounded-md bg-white/70 px-2 py-1 text-xs text-blue-700">All time</span>
+          </div>
           <div className="mt-2 text-3xl font-bold text-blue-900">{stats.totalPatients}</div>
         </div>
-        <div className="rounded-lg bg-green-50 p-6 shadow">
-          <div className="text-sm font-medium text-green-600">Total Appointments</div>
-          <div className="mt-2 text-3xl font-bold text-green-900">{stats.totalAppointments}</div>
+        <div className="rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 p-6 shadow">
+          <div className="flex items-center justify-between">
+            <div className="text-sm font-medium text-emerald-600">Total Appointments</div>
+            <span className="rounded-md bg-white/70 px-2 py-1 text-xs text-emerald-700">All time</span>
+          </div>
+          <div className="mt-2 text-3xl font-bold text-emerald-900">{stats.totalAppointments}</div>
         </div>
-        <div className="rounded-lg bg-purple-50 p-6 shadow">
-          <div className="text-sm font-medium text-purple-600">Total Users</div>
-          <div className="mt-2 text-3xl font-bold text-purple-900">{stats.totalUsers}</div>
+        <div className="rounded-xl bg-gradient-to-br from-violet-50 to-fuchsia-50 p-6 shadow">
+          <div className="flex items-center justify-between">
+            <div className="text-sm font-medium text-violet-600">Total Users</div>
+            <span className="rounded-md bg-white/70 px-2 py-1 text-xs text-violet-700">Active</span>
+          </div>
+          <div className="mt-2 text-3xl font-bold text-violet-900">{stats.totalUsers}</div>
         </div>
       </div>
 
       {/* Today's Appointments */}
-      <div className="rounded-lg bg-white p-6 shadow">
+      <div className="rounded-xl bg-white/90 backdrop-blur p-6 shadow">
         <h3 className="mb-4 text-xl font-semibold">Today's Appointments</h3>
         {todayAppointments.length === 0 ? (
           <p className="text-gray-500">No appointments scheduled for today.</p>
