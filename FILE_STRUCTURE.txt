@@ -1,0 +1,230 @@
+Medicare-Pro/
+│
+├── 📁 server/                          # Backend (Node.js + Express)
+│   ├── 📁 node_modules/                # Dependencies (auto-generated)
+│   ├── 📄 package.json                 # Backend dependencies & scripts
+│   ├── 📄 package-lock.json            # Dependency lock file
+│   ├── 📄 .env                         # Environment variables (create this)
+│   │
+│   ├── 📁 scripts/                     # Database scripts
+│   │   ├── 📄 init.sql                 # SQL schema & table creation
+│   │   └── 📄 run-init-sql.js          # Database initialization script
+│   │
+│   └── 📁 src/                         # Source code
+│       ├── 📄 index.js                 # Main server entry point
+│       │
+│       ├── 📁 lib/                     # Library utilities
+│       │   └── 📄 db.js                # Database connection & queries
+│       │
+│       ├── 📁 middleware/              # Express middleware
+│       │   └── 📄 auth.js              # JWT authentication & authorization
+│       │
+│       ├── 📁 routes/                  # API route handlers
+│       │   ├── 📄 auth.js              # Login/logout endpoints
+│       │   ├── 📄 users.js             # User management (admin only)
+│       │   ├── 📄 patients.js          # Patient CRUD operations
+│       │   ├── 📄 appointments.js      # Appointment management
+│       │   ├── 📄 dashboard.js         # Dashboard statistics
+│       │   └── 📄 medicalRecords.js    # Medical records management
+│       │
+│       └── 📁 utils/                   # Utility functions
+│           └── 📄 crypto.js            # Password hashing (bcrypt)
+│
+├── 📁 client/                          # Frontend (React + Vite)
+│   ├── 📁 node_modules/                # Dependencies (auto-generated)
+│   ├── 📄 package.json                 # Frontend dependencies & scripts
+│   ├── 📄 package-lock.json            # Dependency lock file
+│   ├── 📄 index.html                   # HTML entry point
+│   ├── 📄 vite.config.js               # Vite build configuration
+│   ├── 📄 tailwind.config.js           # Tailwind CSS configuration
+│   ├── 📄 postcss.config.js            # PostCSS configuration
+│   │
+│   └── 📁 src/                         # Source code
+│       ├── 📄 main.jsx                 # React app entry point
+│       ├── 📄 App.jsx                  # Main app component & routing
+│       ├── 📄 index.css                # Global CSS styles
+│       │
+│       ├── 📁 components/              # Reusable React components
+│       │   ├── 📄 Notification.jsx     # Success/error notifications
+│       │   └── 📄 RoleGuard.jsx        # Role-based access control
+│       │
+│       ├── 📁 pages/                   # Page components
+│       │   ├── 📄 Login.jsx            # Login page
+│       │   ├── 📄 Dashboard.jsx        # Dashboard with statistics
+│       │   ├── 📄 Patients.jsx         # Patients list & management
+│       │   ├── 📄 PatientProfile.jsx   # Patient detail page
+│       │   └── 📄 Appointments.jsx     # Appointments management
+│       │
+│       ├── 📁 services/                # API service layer
+│       │   ├── 📄 api.js               # API request helper
+│       │   └── 📄 auth.js              # Authentication service
+│       │
+│       └── 📁 utils/                   # Utility functions
+│           └── 📄 validation.js        # Form validation utilities
+│
+└── 📁 Documentation Files/
+    ├── 📄 README.md                    # Main project documentation
+    ├── 📄 API_DOCUMENTATION.md         # API endpoints reference
+    ├── 📄 DATABASE_SCHEMA.md           # Database structure docs
+    ├── 📄 USER_GUIDE.md                # User manual for all roles
+    ├── 📄 TESTING_GUIDE.md             # Testing checklist
+    ├── 📄 PROJECT_PLAN.md              # Development plan
+    ├── 📄 PROJECT_STRUCTURE.md         # Detailed structure docs
+    └── 📄 FILE_STRUCTURE.txt           # This file - visual tree
+
+
+═══════════════════════════════════════════════════════════════════════════════
+                           QUICK FILE REFERENCE
+═══════════════════════════════════════════════════════════════════════════════
+
+BACKEND FILES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+server/src/index.js              → Main server, starts Express app
+server/src/lib/db.js             → Database connection & query helpers
+server/src/middleware/auth.js    → JWT authentication & role checks
+server/src/routes/auth.js        → Login/logout API endpoints
+server/src/routes/users.js       → User management API (admin only)
+server/src/routes/patients.js    → Patient CRUD API
+server/src/routes/appointments.js → Appointment management API
+server/src/routes/dashboard.js   → Dashboard statistics API
+server/src/routes/medicalRecords.js → Medical records API
+server/src/utils/crypto.js       → Password hashing functions
+server/scripts/init.sql          → Database schema & sample data
+server/scripts/run-init-sql.js   → Database initialization script
+
+
+FRONTEND FILES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+client/src/main.jsx              → React app entry point
+client/src/App.jsx               → Main app with routing & navigation
+client/src/index.css             → Global styles & Tailwind CSS
+client/src/pages/Login.jsx       → Login page component
+client/src/pages/Dashboard.jsx   → Dashboard page with stats
+client/src/pages/Patients.jsx    → Patients list & management
+client/src/pages/PatientProfile.jsx → Patient detail page
+client/src/pages/Appointments.jsx → Appointments management
+client/src/components/Notification.jsx → Notification component
+client/src/components/RoleGuard.jsx → Role-based access component
+client/src/services/api.js       → API request helper
+client/src/services/auth.js      → Authentication service
+client/src/utils/validation.js   → Form validation functions
+
+
+CONFIGURATION FILES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+server/package.json              → Backend dependencies
+client/package.json              → Frontend dependencies
+server/.env                      → Environment variables (create this)
+client/vite.config.js            → Vite build configuration
+client/tailwind.config.js        → Tailwind CSS configuration
+client/postcss.config.js         → PostCSS configuration
+
+
+DOCUMENTATION FILES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+README.md                        → Main documentation & setup guide
+API_DOCUMENTATION.md             → Complete API reference
+DATABASE_SCHEMA.md               → Database structure documentation
+USER_GUIDE.md                    → User manual for all roles
+TESTING_GUIDE.md                 → Testing checklist & guide
+PROJECT_PLAN.md                  → Development plan & progress
+PROJECT_STRUCTURE.md             → Detailed file/folder structure
+FILE_STRUCTURE.txt               → This file - visual tree structure
+
+
+═══════════════════════════════════════════════════════════════════════════════
+                              FILE PURPOSES
+═══════════════════════════════════════════════════════════════════════════════
+
+🔐 AUTHENTICATION:
+   • server/src/routes/auth.js        → Login/logout API
+   • server/src/middleware/auth.js    → JWT verification
+   • server/src/utils/crypto.js       → Password hashing
+   • client/src/services/auth.js      → Login/logout functions
+   • client/src/pages/Login.jsx       → Login UI
+
+👥 PATIENT MANAGEMENT:
+   • server/src/routes/patients.js    → Patient API endpoints
+   • client/src/pages/Patients.jsx    → Patient list page
+   • client/src/pages/PatientProfile.jsx → Patient detail page
+
+📅 APPOINTMENTS:
+   • server/src/routes/appointments.js → Appointment API
+   • client/src/pages/Appointments.jsx → Appointment management
+
+📋 MEDICAL RECORDS:
+   • server/src/routes/medicalRecords.js → Medical records API
+   • client/src/pages/PatientProfile.jsx → Medical records UI
+
+📊 DASHBOARD:
+   • server/src/routes/dashboard.js   → Dashboard API
+   • client/src/pages/Dashboard.jsx   → Dashboard UI
+
+🔒 ROLE-BASED ACCESS:
+   • server/src/middleware/auth.js    → Backend role checks
+   • client/src/components/RoleGuard.jsx → Frontend role checks
+   • client/src/App.jsx               → Role-based navigation
+
+🎨 STYLING:
+   • client/src/index.css             → Global styles
+   • client/tailwind.config.js        → Tailwind configuration
+   • client/postcss.config.js         → PostCSS configuration
+
+🧪 VALIDATION:
+   • client/src/utils/validation.js   → Form validation
+   • client/src/pages/*.jsx           → Form validation in pages
+
+🔧 UTILITIES:
+   • server/src/lib/db.js             → Database utilities
+   • client/src/services/api.js       → API utilities
+   • client/src/components/Notification.jsx → Notification system
+
+
+═══════════════════════════════════════════════════════════════════════════════
+                              KEY FEATURES
+═══════════════════════════════════════════════════════════════════════════════
+
+✅ User Authentication (JWT)
+✅ Role-Based Access Control (Admin, Doctor, Receptionist)
+✅ Patient Management (CRUD)
+✅ Appointment Scheduling
+✅ Medical Records Management
+✅ Dashboard with Statistics
+✅ Responsive UI (Tailwind CSS)
+✅ Input Validation
+✅ Error Handling
+✅ Success/Error Notifications
+✅ Mobile Responsive Design
+
+
+═══════════════════════════════════════════════════════════════════════════════
+                              QUICK START
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Setup Database:
+   cd server
+   npm run db:init
+
+2. Start Backend:
+   cd server
+   npm run dev
+
+3. Start Frontend:
+   cd client
+   npm run dev
+
+4. Access Application:
+   Frontend: http://localhost:5173
+   Backend:  http://localhost:4000
+
+5. Login:
+   admin@example.com / password123
+   doctor@example.com / password123
+   reception@example.com / password123
+   drgilli@gmail.com / 123456789
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+For detailed information, see PROJECT_STRUCTURE.md
+
