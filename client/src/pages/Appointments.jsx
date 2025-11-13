@@ -34,73 +34,198 @@ export default function Appointments() {
     }
   };
 
+  const [updatingId, setUpdatingId] = useState(null);
+  const statusOptions = [
+    { value: 'scheduled', label: 'Scheduled' },
+    { value: 'in_progress', label: 'In Progress' },
+    { value: 'completed', label: 'Completed' },
+    { value: 'pending', label: 'Pending' },
+    { value: 'cancelled', label: 'Cancelled' },
+  ];
+
+  const updateStatus = async (id, status) => {
+    try {
+      setUpdatingId(id);
+      await api(`/appointments/${id}`, { method: 'PATCH', body: { status } });
+      if (window.showNotification) {
+        window.showNotification('Appointment status updated', 'success');
+      }
+      await load();
+    } catch (error) {
+      if (window.showNotification) {
+        window.showNotification(error.message || 'Failed to update status', 'error');
+      }
+    } finally {
+      setUpdatingId(null);
+    }
+  };
+
   const pad2 = (n) => (n < 10 ? `0${n}` : `${n}`);
-  const getDerivedStatus = (a) => {
-    if (!a?.date) return 'pending';
-    const datePart = a.date.slice(0, 10); // "YYYY-MM-DD"
-    const timePart = (a.time || '00:00').slice(0, 5); // "HH:mm"
+  const deriveTemporalStatus = (appointment) => {
+    if (!appointment?.date) return 'scheduled';
+
+    const datePart = appointment.date.slice(0, 10); // "YYYY-MM-DD"
+    const timePart = (appointment.time || '00:00').slice(0, 5); // "HH:mm"
 
     const now = new Date();
     const todayStr = `${now.getFullYear()}-${pad2(now.getMonth() + 1)}-${pad2(now.getDate())}`;
     const nowHHMM = `${pad2(now.getHours())}:${pad2(now.getMinutes())}`;
 
-    if (datePart > todayStr) return 'pending';
+    if (datePart > todayStr) return 'scheduled';
     if (datePart < todayStr) return 'completed';
-    // same day: compare times lexicographically
-    return timePart > nowHHMM ? 'pending' : 'completed';
+
+    // Same day: compare times lexicographically
+    return timePart > nowHHMM ? 'scheduled' : 'completed';
+  };
+
+  const getStatus = (appointment) => {
+    const normalized = (appointment?.status || '').toLowerCase();
+    const knownStatuses = new Set(['scheduled', 'completed', 'cancelled', 'pending', 'in_progress']);
+
+    if (knownStatuses.has(normalized)) {
+      return normalized;
+    }
+
+    return deriveTemporalStatus(appointment);
+  };
+
+  const statusLabels = {
+    scheduled: 'Scheduled',
+    pending: 'Pending',
+    completed: 'Completed',
+    cancelled: 'Cancelled',
+    in_progress: 'In Progress',
+  };
+
+  const statusClasses = {
+    scheduled: 'badge-info',
+    pending: 'badge-warning',
+    completed: 'badge-success',
+    cancelled: 'bg-red-100 text-red-700',
+    in_progress: 'bg-primary-100 text-primary-800',
   };
 
   return (
-    <div>
-      <div className="mb-3 flex items-center justify-between">
-        <h2 className="text-2xl font-semibold">Appointments</h2>
-        <div className="hidden sm:block text-xs text-gray-500">Schedule and track appointments</div>
+    <div className="space-y-6 animate-fade-in">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-1">Appointments</h1>
+          <p className="text-gray-600">Schedule and track appointments</p>
+        </div>
       </div>
+
+      {/* Create Appointment Form */}
       {(hasAnyRole('admin', 'receptionist')) && (
-        <form onSubmit={add} className="mb-4 flex flex-wrap items-center gap-2 rounded-xl bg-white/90 p-3 shadow">
-          <select className="w-56" value={form.patient_id} onChange={(e) => setForm({ ...form, patient_id: Number(e.target.value) })} required>
-            <option value="">Select patient</option>
-            {patients.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
-          </select>
-          <input type="date" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} required />
-          <input type="time" value={form.time} onChange={(e) => setForm({ ...form, time: e.target.value })} required />
-          <button type="submit">Create Appointment</button>
+        <form onSubmit={add} className="card-elevated p-6 animate-slide-up">
+          <h3 className="mb-4 text-lg font-semibold text-gray-900">Schedule New Appointment</h3>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+            <div>
+              <label className="mb-2 block text-sm font-medium text-gray-700">Patient *</label>
+              <select 
+                className="input" 
+                value={form.patient_id} 
+                onChange={(e) => setForm({ ...form, patient_id: Number(e.target.value) })} 
+                required
+              >
+                <option value="">Select patient</option>
+                {patients.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="mb-2 block text-sm font-medium text-gray-700">Date *</label>
+              <input 
+                type="date" 
+                className="input"
+                value={form.date} 
+                onChange={(e) => setForm({ ...form, date: e.target.value })} 
+                required 
+              />
+            </div>
+            <div>
+              <label className="mb-2 block text-sm font-medium text-gray-700">Time *</label>
+              <input 
+                type="time" 
+                className="input"
+                value={form.time} 
+                onChange={(e) => setForm({ ...form, time: e.target.value })} 
+                required 
+              />
+            </div>
+            <div className="flex items-end">
+              <button type="submit" className="btn btn-primary w-full">
+                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+                Create
+              </button>
+            </div>
+          </div>
         </form>
       )}
-      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white/95 backdrop-blur shadow">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">ID</th>
-              <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Patient</th>
-              <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Date</th>
-              <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Time</th>
-              <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Status</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100">
-            {appointments.map(a => (
-              <tr key={a.id} className="hover:bg-gray-50">
-                <td className="px-4 py-2 text-sm text-gray-700">{a.id}</td>
-                <td className="px-4 py-2 text-sm font-medium">{a.patient_name}</td>
-                <td className="px-4 py-2 text-sm text-gray-700">{a.date?.slice(0,10)}</td>
-                <td className="px-4 py-2 text-sm text-gray-700">{a.time}</td>
-                <td className="px-4 py-2 text-sm">
-                  {(() => {
-                    const s = getDerivedStatus(a);
-                    return (
-                      <span className={`rounded-full px-2 py-1 text-xs ${
-                        s === 'completed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
-                      }`}>
-                        {s}
-                      </span>
-                    );
-                  })()}
-                </td>
+
+      {/* Appointments Table */}
+      <div className="card-elevated overflow-hidden animate-slide-up" style={{ animationDelay: '0.1s' }}>
+        <div className="overflow-x-auto">
+          <table className="table-modern">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Patient</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Status</th>
+                {(hasAnyRole('admin', 'receptionist', 'doctor')) && <th>Actions</th>}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {appointments.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="px-6 py-12 text-center">
+                    <svg className="mx-auto h-16 w-16 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <p className="text-gray-500 font-medium">No appointments found</p>
+                  </td>
+                </tr>
+              ) : (
+                appointments.map(a => {
+                  const statusKey = getStatus(a);
+                  const badgeClass = statusClasses[statusKey] || 'badge-gray';
+                  const label = statusLabels[statusKey] || (statusKey ? statusKey : 'Unknown');
+
+                  return (
+                    <tr key={a.id}>
+                      <td className="font-mono text-xs text-gray-500">{a.id}</td>
+                      <td className="font-medium text-gray-900">{a.patient_name}</td>
+                      <td className="text-gray-700">{a.date?.slice(0,10)}</td>
+                      <td className="text-gray-700">{a.time}</td>
+                      <td>
+                        <span className={`badge ${badgeClass}`}>
+                          {label}
+                        </span>
+                      </td>
+                      {(hasAnyRole('admin', 'receptionist', 'doctor')) && (
+                        <td>
+                          <select
+                            className="input"
+                            value={statusKey}
+                            disabled={updatingId === a.id}
+                            onChange={(e) => updateStatus(a.id, e.target.value)}
+                          >
+                            {statusOptions.map(opt => (
+                              <option key={opt.value} value={opt.value}>{opt.label}</option>
+                            ))}
+                          </select>
+                        </td>
+                      )}
+                    </tr>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

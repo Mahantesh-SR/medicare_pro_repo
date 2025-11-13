@@ -46,101 +46,171 @@ export default function App() {
   }, []);
 
   return (
-    <div
-      className="min-h-screen"
-      style={{
-        backgroundImage: 'url(/images/pattern.svg)',
-        backgroundSize: 'cover',
-        backgroundAttachment: 'fixed'
-      }}
-    >
-      <div className="mx-auto max-w-6xl p-2 sm:p-4">
-      <header className="mb-4 mt-2 sm:mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 relative">
-        <div className="flex items-center justify-between w-full sm:w-auto gap-3">
-          <Link className="font-medium inline-flex items-center gap-2" to="/" onClick={() => setMenuOpen(false)}>
-            <img src="/logo.svg" alt="Medicare Pro" className="h-6 w-6" />
-            <span className="hidden sm:inline">Medicare Pro</span>
-          </Link>
-          <button
-            className="sm:hidden inline-flex items-center justify-center rounded-md border border-gray-200 bg-white/80 px-2 py-1 shadow"
-            aria-label="Open menu"
-            onClick={() => setMenuOpen(v => !v)}
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <circle cx="5" cy="12" r="2" fill="#374151"></circle>
-              <circle cx="12" cy="12" r="2" fill="#374151"></circle>
-              <circle cx="19" cy="12" r="2" fill="#374151"></circle>
-            </svg>
-          </button>
-        </div>
-
-        <nav className="hidden sm:flex flex-wrap items-center gap-2 sm:gap-3">
-          <Link className="inline-flex items-center gap-2 rounded-full bg-white/80 px-3 py-1.5 text-sm font-medium text-gray-700 shadow hover:bg-white hover:shadow-md transition" to="/">
-            Dashboard
-          </Link>
-          {(hasAnyRole('admin', 'doctor', 'receptionist')) && (
-            <Link className="inline-flex items-center gap-2 rounded-full bg-white/80 px-3 py-1.5 text-sm font-medium text-gray-700 shadow hover:bg-white hover:shadow-md transition" to="/patients">
-              Patients
-            </Link>
-          )}
-          {(hasAnyRole('admin', 'doctor', 'receptionist')) && (
-            <Link className="inline-flex items-center gap-2 rounded-full bg-white/80 px-3 py-1.5 text-sm font-medium text-gray-700 shadow hover:bg-white hover:shadow-md transition" to="/appointments">
-              Appointments
-            </Link>
-          )}
-          {(hasAnyRole('admin')) && (
-            <Link className="inline-flex items-center gap-2 rounded-full bg-white/80 px-3 py-1.5 text-sm font-medium text-gray-700 shadow hover:bg-white hover:shadow-md transition" to="/users">
-              Users
-            </Link>
-          )}
-        </nav>
-
-        {menuOpen && (
-          <div className="absolute left-0 right-0 top-full z-20 mt-2 rounded-xl border border-gray-200 bg-white shadow-lg sm:hidden">
-            <div className="flex flex-col py-1">
-              <Link className="px-4 py-2 text-sm hover:bg-gray-50" to="/" onClick={() => setMenuOpen(false)}>Dashboard</Link>
-              {(hasAnyRole('admin', 'doctor', 'receptionist')) && (
-                <Link className="px-4 py-2 text-sm hover:bg-gray-50" to="/patients" onClick={() => setMenuOpen(false)}>Patients</Link>
-              )}
-              {(hasAnyRole('admin', 'doctor', 'receptionist')) && (
-                <Link className="px-4 py-2 text-sm hover:bg-gray-50" to="/appointments" onClick={() => setMenuOpen(false)}>Appointments</Link>
-              )}
-              {(hasAnyRole('admin')) && (
-                <Link className="px-4 py-2 text-sm hover:bg-gray-50" to="/users" onClick={() => setMenuOpen(false)}>Users</Link>
-              )}
+    <div className="min-h-screen">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Modern Navbar */}
+        <header className="sticky top-0 z-40 mb-6 mt-4">
+          <nav className="card-elevated flex items-center justify-between px-6 py-4 animate-slide-down">
+            <div className="flex items-center gap-6">
+              <Link 
+                className="flex items-center gap-2.5 font-bold text-xl text-gray-900 hover:text-primary-600 transition-colors duration-200" 
+                to="/" 
+                onClick={() => setMenuOpen(false)}
+              >
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-primary-600 to-primary-700 shadow-md">
+                  <img src="/logo.svg" alt="Medicare Pro" className="h-6 w-6" />
+                </div>
+                <span className="hidden sm:inline bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
+                  Medicare Pro
+                </span>
+              </Link>
+              
+              {/* Desktop Navigation */}
+              <div className="hidden md:flex items-center gap-1">
+                <Link 
+                  className="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-all duration-200" 
+                  to="/"
+                >
+                  Dashboard
+                </Link>
+                {(hasAnyRole('admin', 'doctor', 'receptionist')) && (
+                  <Link 
+                    className="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-all duration-200" 
+                    to="/patients"
+                  >
+                    Patients
+                  </Link>
+                )}
+                {(hasAnyRole('admin', 'doctor', 'receptionist')) && (
+                  <Link 
+                    className="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-all duration-200" 
+                    to="/appointments"
+                  >
+                    Appointments
+                  </Link>
+                )}
+                {(hasAnyRole('admin')) && (
+                  <Link 
+                    className="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-all duration-200" 
+                    to="/users"
+                  >
+                    Users
+                  </Link>
+                )}
+              </div>
             </div>
-          </div>
-        )}
 
-        <div className="flex items-center gap-3">
-          {user ? (
-            <>
-              <span className="text-sm text-gray-700">{user.name} ({user.role})</span>
-              <button onClick={() => { logout(); setUser(null); navigate('/login'); }}>Logout</button>
-            </>
-          ) : (
-            <Link to="/login" className="text-sm">Login</Link>
+            {/* User Menu & Mobile Toggle */}
+            <div className="flex items-center gap-4">
+              {user ? (
+                <>
+                  <div className="hidden sm:flex items-center gap-3 px-4 py-2 rounded-lg bg-gray-50">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary-500 to-primary-600 text-xs font-semibold text-white shadow-sm">
+                      {user.name.charAt(0).toUpperCase()}
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-sm font-medium text-gray-900">{user.name}</span>
+                      <span className="text-xs text-gray-500 capitalize">{user.role}</span>
+                    </div>
+                  </div>
+                  <button 
+                    onClick={() => { logout(); setUser(null); navigate('/login'); }}
+                    className="btn btn-ghost text-sm"
+                  >
+                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    <span className="hidden sm:inline">Logout</span>
+                  </button>
+                </>
+              ) : (
+                <Link to="/login" className="btn btn-primary text-sm">
+                  Login
+                </Link>
+              )}
+              
+              {/* Mobile Menu Button */}
+              <button
+                className="md:hidden inline-flex items-center justify-center rounded-lg p-2 text-gray-700 hover:bg-gray-100 transition-colors"
+                aria-label="Toggle menu"
+                onClick={() => setMenuOpen(v => !v)}
+              >
+                {menuOpen ? (
+                  <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                ) : (
+                  <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                )}
+              </button>
+            </div>
+          </nav>
+
+          {/* Mobile Menu */}
+          {menuOpen && (
+            <div className="absolute left-4 right-4 z-30 mt-2 card-elevated animate-slide-down md:hidden">
+              <div className="flex flex-col py-2">
+                <Link 
+                  className="px-4 py-3 text-sm font-medium text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors" 
+                  to="/" 
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Dashboard
+                </Link>
+                {(hasAnyRole('admin', 'doctor', 'receptionist')) && (
+                  <Link 
+                    className="px-4 py-3 text-sm font-medium text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors" 
+                    to="/patients" 
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Patients
+                  </Link>
+                )}
+                {(hasAnyRole('admin', 'doctor', 'receptionist')) && (
+                  <Link 
+                    className="px-4 py-3 text-sm font-medium text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors" 
+                    to="/appointments" 
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Appointments
+                  </Link>
+                )}
+                {(hasAnyRole('admin')) && (
+                  <Link 
+                    className="px-4 py-3 text-sm font-medium text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors" 
+                    to="/users" 
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Users
+                  </Link>
+                )}
+              </div>
+            </div>
           )}
-        </div>
-      </header>
-      <div className="h-px w-full bg-gray-200/80" />
-      <main className="mt-4">
-        <Routes>
-          <Route path="/login" element={<Login onLoggedIn={() => setUser(getUser())} />} />
-          <Route path="/" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-          <Route path="/patients" element={<PrivateRoute><Patients /></PrivateRoute>} />
-          <Route path="/patients/:id" element={<PrivateRoute><PatientProfile /></PrivateRoute>} />
-          <Route path="/appointments" element={<PrivateRoute><Appointments /></PrivateRoute>} />
-          <Route path="/users" element={<PrivateRoute><Users /></PrivateRoute>} />
-        </Routes>
-      </main>
-      {notification && (
-        <Notification
-          message={notification.message}
-          type={notification.type}
-          onClose={() => setNotification(null)}
-        />
-      )}
+        </header>
+
+        {/* Main Content */}
+        <main className="pb-12">
+          <Routes>
+            <Route path="/login" element={<Login onLoggedIn={() => setUser(getUser())} />} />
+            <Route path="/" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+            <Route path="/patients" element={<PrivateRoute><Patients /></PrivateRoute>} />
+            <Route path="/patients/:id" element={<PrivateRoute><PatientProfile /></PrivateRoute>} />
+            <Route path="/appointments" element={<PrivateRoute><Appointments /></PrivateRoute>} />
+            <Route path="/users" element={<PrivateRoute><Users /></PrivateRoute>} />
+          </Routes>
+        </main>
+
+        {/* Notification */}
+        {notification && (
+          <Notification
+            message={notification.message}
+            type={notification.type}
+            onClose={() => setNotification(null)}
+          />
+        )}
       </div>
     </div>
   );
