@@ -96,6 +96,7 @@ Medicare-Pro/
 - [User Guide](./USER_GUIDE.md) - User manual for all roles
 - [Testing Guide](./TESTING_GUIDE.md) - Comprehensive testing checklist
 - [Project Plan](./PROJECT_PLAN.md) - Development plan and progress
+- [Project Structure](./PROJECT_STRUCTURE.md) - Complete file/folder structure with descriptions
 
 ## Development
 
@@ -139,24 +140,5 @@ This creates all tables and seeds sample data.
 ## License
 
 This project is for educational purposes.
-
-## Daily Report Template
-
-Use this template for daily progress reports (write in your own words):
-
-```
-Date: [Insert Date]
-Phase: [Phase #]
-Goals Achieved:
-- ...
-Challenges Faced:
-- ...
-Key Learnings:
-- ...
-Tomorrow's Focus:
-- ...
-Code/Progress Evidence:
-- Links to commits, screenshots, code snippets
-```
 
 
