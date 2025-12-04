@@ -4,7 +4,7 @@ import { login } from '../services/auth.js';
 
 export default function Login({ onLoggedIn }) {
   const [email, setEmail] = useState('admin@example.com');
-  const [password, setPassword] = useState('password123');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
