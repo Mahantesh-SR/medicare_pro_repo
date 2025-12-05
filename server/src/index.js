@@ -17,7 +17,7 @@ const port = process.env.PORT || 4000;
 // app.use(cors({ origin: process.env.CORS_ORIGIN || '*', credentials: true }));
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://medicare-pro-repo.vercel.app/login"
+  "https://medicare-pro-repo.vercel.app"
 ];
 app.use(
   cors({
