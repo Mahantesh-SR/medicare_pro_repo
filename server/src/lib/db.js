@@ -9,7 +9,15 @@ export function createPool() {
   if (pool) return Promise.resolve(pool);
   const connectionString = process.env.DATABASE_URL;
   if (!connectionString) throw new Error('DATABASE_URL is not set');
-  pool = new pg.Pool({ connectionString });
+  const ssl =
+    process.env.NODE_ENV === 'production'
+      ? { rejectUnauthorized: false }
+      : false;
+
+  pool = new pg.Pool({
+    connectionString,
+    ssl
+  });
   return pool.connect().then((client) => {
     client.release();
     return pool;
