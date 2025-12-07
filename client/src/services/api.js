@@ -1,6 +1,6 @@
 import { getToken } from './auth.js';
 
-const base = '';
+const base = import.meta.env.VITE_API_URL||'';
 
 export async function api(path, { method = 'GET', body, headers = {} } = {}) {
   const token = getToken();
